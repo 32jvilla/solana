@@ -1,5 +1,7 @@
 import { NFTData } from "providers/accounts";
 import ReactJson from "react-json-view";
+import { MetadataData } from "@metaplex/js/node_modules/@metaplex-foundation/mpl-token-metadata";
+
 
 export function MetaplexMetadataCard({ nftData }: { nftData: NFTData }) {
   return (
@@ -15,7 +17,7 @@ export function MetaplexMetadataCard({ nftData }: { nftData: NFTData }) {
 
         <div className="card metadata-json-viewer m-4">
           <ReactJson
-            src={nftData.metadata}
+            src={nftData}
             theme={"solarized"}
             style={{ padding: 25 }}
           />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { CacheEntry, FetchStatus } from "providers/cache";
 import {
@@ -8,6 +8,8 @@ import {
   TokenProgramData,
   useMintAccountInfo,
 } from "providers/accounts";
+// import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
+import { Connection, programs } from '@metaplex/js';
 import { StakeAccountSection } from "components/account/StakeAccountSection";
 import { TokenAccountSection } from "components/account/TokenAccountSection";
 import { ErrorCard } from "components/common/ErrorCard";
@@ -43,6 +45,7 @@ import { SecurityCard } from "components/account/SecurityCard";
 import { AnchorAccountCard } from "components/account/AnchorAccountCard";
 import { AnchorProgramCard } from "components/account/AnchorProgramCard";
 import { useAnchorProgram } from "providers/anchor";
+import { useEffect } from "react";
 
 const IDENTICON_WIDTH = 64;
 
@@ -360,6 +363,18 @@ function MoreSection({
   const pubkey = account.pubkey;
   const data = account?.details?.data;
 
+
+  // const [test, setTest] = useState<typeof Metadata>();
+  const { metadata: { Metadata } } = programs;
+  const connection = new Connection('mainnet');
+  const getTest = async () => {
+    const t = await Metadata.load(connection, pubkey);
+    console.log(t)
+    // setTest(t);
+  }
+  useEffect(() => { getTest(); }, [getTest]);
+  // console.log(test)
+
   return (
     <>
       <div className="container">
@@ -401,6 +416,7 @@ function MoreSection({
       {tab === "metadata" && (
         <MetaplexMetadataCard
           nftData={(account.details?.data as TokenProgramData).nftData!}
+          // nftData={json}
         />
       )}
       {tab === "domains" && <DomainsCard pubkey={pubkey} />}
